@@ -45,7 +45,9 @@ $(document).ready(function() {
         counter.innerHTML = result["total_count"];
         result["items"].forEach(appendSearchResult);
         n_results = results.children.length;
-        appendLoadMoreButton();
+        if (result["total_count"] > n_results) {
+            appendLoadMoreButton();
+        }
     }
 
     function appendSearchResult(result) {
