@@ -44,6 +44,7 @@ $(document).ready(function() {
         counter.innerHTML = result["total_count"];
         result["items"].forEach(appendSearchResult);
         n_results = results.children.length;
+        appendLoadMoreButton();
     }
 
     function appendSearchResult(result) {
@@ -57,6 +58,27 @@ $(document).ready(function() {
         li_el.appendChild(text_el);
 
         results.appendChild(li_el);
+    }
+
+    function appendLoadMoreButton() {
+        li_el = document.createElement("li");
+
+        text_el = createResultNameElement("Load more results ");
+        li_el.appendChild(text_el);
+
+        square_down_icon = document.createElement("i");
+        square_down_icon.className = "fa fa-caret-square-o-down";
+        square_down_icon.setAttribute("aria-hidden", "true");
+        li_el.appendChild(square_down_icon)
+
+        li_el.onclick = removeThisAndDoSearch;
+
+        results.appendChild(li_el);
+    }
+
+    function removeThisAndDoSearch() {
+        results.removeChild(this);
+        doSearch();
     }
 
     function createResultNameElement(name) {
