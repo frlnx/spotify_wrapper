@@ -9,8 +9,9 @@ KEYMAP = {'artist': 'artists',
           'playlist': 'playlists'}
 
 
-def query(query_type, query_term):
-    r = requests.get(SPOTIFY_API_ENDPOINT, params={'type': query_type, 'q': query_term})
+def query(query_type, query_term, offset=0, limit=5):
+    params = {'type': query_type, 'q': query_term, 'offset': offset, 'limit': limit}
+    r = requests.get(SPOTIFY_API_ENDPOINT, params=params)
     response = r.json()
     return _format_response(response, query_type)
 
