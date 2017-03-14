@@ -37,6 +37,7 @@ $(document).ready(function() {
             e.preventDefault();
             qtype = this.getAttribute("x-qtype");
             qtype_selected.innerHTML = qtype;
+            clearSearchResults();
          }
     }
 
