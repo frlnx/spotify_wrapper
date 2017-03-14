@@ -4,6 +4,7 @@ $(document).ready(function() {
         counter = document.getElementById("counter"),
         qtype_dropdown = document.getElementById("qtype_dropdown"),
         qtype_selected = document.getElementById("qtype_selected"),
+        search_icon = document.getElementById("search-icon"),
         qtype = "album",
         xmlhttp = new XMLHttpRequest(),
         n_results = 0;
@@ -29,6 +30,11 @@ $(document).ready(function() {
             doSearch();
         }
     };
+
+    search_icon.onclick = function() {
+        clearSearchResults();
+        doSearch();
+    }
 
     for (var i = 0; i < qtype_dropdown.children.length; i++) {
          listElement = qtype_dropdown.children[i];
