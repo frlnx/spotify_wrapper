@@ -5,7 +5,8 @@ $(document).ready(function() {
         qtype_dropdown = document.getElementById("qtype_dropdown"),
         qtype_selected = document.getElementById("qtype_selected"),
         qtype = "album",
-        xmlhttp = new XMLHttpRequest();
+        xmlhttp = new XMLHttpRequest(),
+        n_results = 0;
 
     xmlhttp.onreadystatechange = function() {
         if (xmlhttp.readyState == XMLHttpRequest.DONE ) {
@@ -36,12 +37,17 @@ $(document).ready(function() {
             e.preventDefault();
             qtype = this.getAttribute("x-qtype");
             qtype_selected.innerHTML = qtype;
+            clearSearchResults();
          }
     }
 
     function presentResult(result) {
         counter.innerHTML = result["total_count"];
         result["items"].forEach(appendSearchResult);
+        n_results = results.children.length;
+        if (result["total_count"] > n_results) {
+            appendLoadMoreButton();
+        }
     }
 
     function appendSearchResult(result) {
@@ -55,6 +61,27 @@ $(document).ready(function() {
         li_el.appendChild(text_el);
 
         results.appendChild(li_el);
+    }
+
+    function appendLoadMoreButton() {
+        li_el = document.createElement("li");
+
+        text_el = createResultNameElement("Load more results ");
+        li_el.appendChild(text_el);
+
+        square_down_icon = document.createElement("i");
+        square_down_icon.className = "fa fa-caret-square-o-down";
+        square_down_icon.setAttribute("aria-hidden", "true");
+        li_el.appendChild(square_down_icon)
+
+        li_el.onclick = removeThisAndDoSearch;
+
+        results.appendChild(li_el);
+    }
+
+    function removeThisAndDoSearch() {
+        results.removeChild(this);
+        doSearch();
     }
 
     function createResultNameElement(name) {
@@ -73,11 +100,12 @@ $(document).ready(function() {
 
     function clearSearchResults() {
         results.innerHTML = "";
+        n_results = 0;
     }
 
     function doSearch() {
         term = inputbox.value;
-        xmlhttp.open("GET", "/search/" + qtype + "/" + term, true);
+        xmlhttp.open("GET", "/search/" + qtype + "/" + term + '?limit=5&offset=' + n_results, true);
         xmlhttp.send();
     }
 });
