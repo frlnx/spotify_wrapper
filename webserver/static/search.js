@@ -5,7 +5,8 @@ $(document).ready(function() {
         qtype_dropdown = document.getElementById("qtype_dropdown"),
         qtype_selected = document.getElementById("qtype_selected"),
         qtype = "album",
-        xmlhttp = new XMLHttpRequest();
+        xmlhttp = new XMLHttpRequest(),
+        n_results = 0;
 
     xmlhttp.onreadystatechange = function() {
         if (xmlhttp.readyState == XMLHttpRequest.DONE ) {
@@ -42,6 +43,7 @@ $(document).ready(function() {
     function presentResult(result) {
         counter.innerHTML = result["total_count"];
         result["items"].forEach(appendSearchResult);
+        n_results = results.children.length;
     }
 
     function appendSearchResult(result) {
@@ -73,11 +75,12 @@ $(document).ready(function() {
 
     function clearSearchResults() {
         results.innerHTML = "";
+        n_results = 0;
     }
 
     function doSearch() {
         term = inputbox.value;
-        xmlhttp.open("GET", "/search/" + qtype + "/" + term, true);
+        xmlhttp.open("GET", "/search/" + qtype + "/" + term + '?limit=5&offset=' + n_results, true);
         xmlhttp.send();
     }
 });
